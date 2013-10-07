@@ -127,7 +127,10 @@ class ElementManager(object):
         :type hook: str
         """
         hook_dir = os.path.join(self.tmp_hook_dir, '%s.d' % hook)
-        scripts = os.listdir(hook_dir)
+        try:
+            scripts = os.listdir(hook_dir)
+        except OSError as e:
+            return
         scripts = [s for s in scripts if s.startswith(tuple(string.digits))]
         scripts = sorted(scripts, key=lambda script: os.path.basename(script))
         scripts = [os.path.abspath(os.path.join(hook_dir, s)) for s in scripts]
